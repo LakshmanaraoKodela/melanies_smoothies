@@ -3,6 +3,7 @@ import streamlit as st
 import requests
 from snowflake.snowpark.functions import col
 
+
 # Write directly to the app
 st.title("Restaurant Application")
 
@@ -23,13 +24,10 @@ st.write("Choose the items from the menu on the left and submit your order.")
 # List of items (dummy data)
 cnx= st.connection("snowflake")
 session= cnx.session()
-my_dataframe = session.table("MY_RESTAURENT_APP.RESTURENT_ITEMS.food_items").select(col('food_name'))
+my_dataframe = session.table("MY_RESTAURENT_APP.RESTURENT_ITEMS.").select(col('item_name'))
 # st.dataframe(data=my_dataframe, use_container_width=True)
-# st.stop()
 
-pd_df=my_dataframe.to_pandas()
-# st.dataframe(pd_df)
-# st.stop()
+
 
 
 menu_items=st.multiselect(
@@ -38,8 +36,7 @@ menu_items=st.multiselect(
     max_selections=5
 )
 
-
-
+# menu_items = ['Item 1', 'Item 2', 'Item 3']
 
 # Display menu on the left side
 selected_items = st.sidebar.multiselect("Menu", menu_items, menu_items)
