@@ -2,7 +2,7 @@
 import streamlit as st
 import requests
 from snowflake.snowpark.functions import col
-
+from snowflake.snowpark.context import get_active_session
 
 # Write directly to the app
 st.title("Restaurant Application")
@@ -22,9 +22,10 @@ st.write("Welcome to our restaurant!")
 st.write("Choose the items from the menu on the left and submit your order.")
 
 # List of items (dummy data)
-cnx= st.connection("snowflake")
-session= cnx.session()
-my_dataframe = session.table("MY_RESTAURENT_APP.RESTURENT_ITEMS.").select(col('item_name'))
+# cnx= st.connection("snowflake")
+# session= cnx.session()
+session = get_active_session()
+my_dataframe = session.table("MY_RESTAURENT_APP.RESTURENT_ITEMS.food_items").select(col('FOOD_NAME'))
 # st.dataframe(data=my_dataframe, use_container_width=True)
 
 
@@ -36,7 +37,7 @@ menu_items=st.multiselect(
     max_selections=5
 )
 
-# menu_items = ['Item 1', 'Item 2', 'Item 3']
+
 
 # Display menu on the left side
 selected_items = st.sidebar.multiselect("Menu", menu_items, menu_items)
